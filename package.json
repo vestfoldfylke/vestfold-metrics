@@ -1,5 +1,5 @@
 {
-  "name": "vestfold-metrics",
+  "name": "@vestfoldfylke/vestfold-metrics",
   "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,6 +14,14 @@
     "prepublish": "npm run build",
     "test": "eslint ."
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vestfoldfylke/vestfold-metrics.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vestfoldfylke/vestfold-metrics/issues"
+  },
+  "homepage": "https://github.com/vestfoldfylke/vestfold-metrics/#readme",
   "keywords": [
     "prometheus",
     "grafana",
