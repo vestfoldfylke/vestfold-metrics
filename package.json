@@ -1,0 +1,39 @@
+{
+  "name": "vestfold-metrics",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "pack": "npm run test && npm run build && npm pack",
+    "prepublish": "npm run build",
+    "test": "eslint ."
+  },
+  "keywords": [
+    "prometheus",
+    "grafana",
+    "metrics"
+  ],
+  "author": {
+    "name": "Rune Moskvil Lyngås",
+    "email": "rune.moskvil.lyngas@vestfoldfylke.no",
+    "url": "https://github.com/runely"
+  },
+  "license": "MIT",
+  "description": "Wrapper for prom-client to make it easier to use",
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "@typescript-eslint/eslint-plugin": "^8.44.1",
+    "@typescript-eslint/parser": "^8.44.1",
+    "eslint": "^9.36.0",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "prom-client": "^15.1.3"
+  }
+}
