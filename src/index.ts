@@ -1,10 +1,10 @@
-import metricsClient from 'prom-client'
+import metricsClient from "prom-client";
 
-const register = new metricsClient.Registry()
-metricsClient.collectDefaultMetrics({ register })
+const register = new metricsClient.Registry();
+metricsClient.collectDefaultMetrics({ register });
 
-const counters: Record<string, metricsClient.Counter> = {}
-const gauges: Record<string, metricsClient.Gauge> = {}
+const counters: Record<string, metricsClient.Counter> = {};
+const gauges: Record<string, metricsClient.Gauge> = {};
 
 /**
  * Increases a counter metric by a specified increment. If the counter does not exist, it will be created with the provided <b>name</b>, <b>description</b>, and optional <i>labels</i>.<br />
@@ -22,14 +22,14 @@ const gauges: Record<string, metricsClient.Gauge> = {}
  * @param labels - Optional pairs of label names and label values
  */
 export function countInc(name: string, description: string, increment: number, ...labels: [labelName: string, labelValue: string][]): void {
-  const counter = counters[name] ?? createCounter(name, description, ...labels)
+  const counter = counters[name] ?? createCounter(name, description, ...labels);
 
   if (labels.length > 0) {
-    counter.labels(generateLabelValues(...labels)).inc(increment)
-    return
+    counter.labels(generateLabelValues(...labels)).inc(increment);
+    return;
   }
 
-  counter.inc(increment)
+  counter.inc(increment);
 }
 
 /**
@@ -47,7 +47,7 @@ export function countInc(name: string, description: string, increment: number, .
  * @param labels - Optional pairs of label names and label values
  */
 export function count(name: string, description: string, ...labels: [labelName: string, labelValue: string][]): void {
-  countInc(name, description, 1, ...labels)
+  countInc(name, description, 1, ...labels);
 }
 
 /**
@@ -66,58 +66,62 @@ export function count(name: string, description: string, ...labels: [labelName: 
  * @param labels - Optional pairs of label names and label values
  */
 export function gauge(name: string, description: string, value: number, ...labels: [labelName: string, labelValue: string][]): void {
-  const gauge = gauges[name] ?? createGauge(name, description, ...labels)
+  const gauge = gauges[name] ?? createGauge(name, description, ...labels);
 
   if (labels.length > 0) {
-    gauge.labels(generateLabelValues(...labels)).set(value)
-    return
+    gauge.labels(generateLabelValues(...labels)).set(value);
+    return;
   }
 
-  gauge.set(value)
+  gauge.set(value);
 }
 
 const createCounter = (name: string, description: string, ...labels: [labelName: string, labelValue: string][]): metricsClient.Counter => {
-  if (labels.some(labelPair => !Array.isArray(labelPair) || labelPair.length !== 2)) {
-    throw new Error(`Can not create counter metric '${name}' with description '${description}' because labels must be provided in pairs of label name and label value!`)
+  if (labels.some((labelPair) => !Array.isArray(labelPair) || labelPair.length !== 2)) {
+    throw new Error(
+      `Can not create counter metric '${name}' with description '${description}' because labels must be provided in pairs of label name and label value!`
+    );
   }
 
   const counter = new metricsClient.Counter<string>({
     name,
     help: description,
     labelNames: labels.map(([labelName]) => labelName)
-  })
+  });
 
-  counters[name] = counter
-  register.registerMetric(counter)
+  counters[name] = counter;
+  register.registerMetric(counter);
 
-  return counter
-}
+  return counter;
+};
 
 const createGauge = (name: string, description: string, ...labels: [labelName: string, labelValue: string][]): metricsClient.Gauge => {
-  if (labels.some(labelPair => !Array.isArray(labelPair) || labelPair.length !== 2)) {
-    throw new Error(`Can not create gauge metric '${name}' with description '${description}' because labels must be provided in pairs of label name and label value!`)
+  if (labels.some((labelPair) => !Array.isArray(labelPair) || labelPair.length !== 2)) {
+    throw new Error(
+      `Can not create gauge metric '${name}' with description '${description}' because labels must be provided in pairs of label name and label value!`
+    );
   }
 
   const gauge = new metricsClient.Gauge<string>({
     name,
     help: description,
     labelNames: labels.map(([labelName]) => labelName)
-  })
+  });
 
-  gauges[name] = gauge
-  register.registerMetric(gauge)
+  gauges[name] = gauge;
+  register.registerMetric(gauge);
 
-  return gauge
-}
+  return gauge;
+};
 
 const generateLabelValues = (...labels: [labelName: string, labelValue: string][]): { [key: string]: string } => {
-  const labelValues: { [key: string]: string } = {}
+  const labelValues: { [key: string]: string } = {};
 
   labels.forEach(([labelName, labelValue]): void => {
-    labelValues[labelName] = labelValue
-  })
+    labelValues[labelName] = labelValue;
+  });
 
-  return labelValues
-}
+  return labelValues;
+};
 
-export { register }
+export { register };

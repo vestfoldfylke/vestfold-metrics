@@ -11,7 +11,8 @@
   "scripts": {
     "build": "tsc",
     "pack": "npm run test && npm run build && npm pack",
-    "test": "eslint ."
+    "test": "npx @biomejs/biome check",
+    "lint:fix": "npx @biomejs/biome check --write"
   },
   "repository": {
     "type": "git",
@@ -34,10 +35,8 @@
   "license": "MIT",
   "description": "Wrapper for prom-client to make it easier to use",
   "devDependencies": {
+    "@biomejs/biome": "2.5.6",
     "@types/node": "^26.1.2",
-    "@typescript-eslint/eslint-plugin": "^8.65.0",
-    "@typescript-eslint/parser": "^8.65.0",
-    "eslint": "^10.8.0",
     "typescript": "^5.9.3"
   },
   "dependencies": {
