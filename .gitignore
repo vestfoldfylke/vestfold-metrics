@@ -2,6 +2,7 @@
 .vs
 .vscode
 .idea
+.claude
 
 # MacOS
 .DS_Store
