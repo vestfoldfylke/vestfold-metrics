@@ -82,16 +82,16 @@ export const gauge = (name: string, description: string, value: number, ...label
 
 /**
  * Remove a counter metric from the Prometheus register.<br /><br />
- * 
+ *
  * Example usage:
  * ```TypeScript
  * // if no labels are present for this metric
  * removeCounter("http_requests_total")
- * 
+ *
  * // when labels are present for this metric
  * removeCounter("http_requests_total", ["method", "GET"])
  * ```
- * 
+ *
  * @param name - The name of the counter metric
  * @param labels - Optional pairs of label names and label values
  */
