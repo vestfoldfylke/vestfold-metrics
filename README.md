@@ -68,6 +68,26 @@ gauge('my_gauge_label', 'This is my gauge with label', 15, ['result', 'success']
 gauge('my_gauge_label', 'This is my gauge with label', 8 ['result', 'success'])
 ```
 
+### Remove metric
+
+Removing a metric will remove the metric from the applications Prometheus registry.
+
+```typescript
+import { removeCounter, removeGauge } from "@vestfoldfylke/vestfold-metrics"
+
+// Remove a counter metric which has no labels associated with it
+removeCounter("my_counter")
+
+// Remove a gauge metric which has no labels assocoated with it
+removeGauge("my_gauge")
+
+// Remove a counter metric which has labels associated with it
+removeCounter("my_counter_label", ["result", "success"])
+
+// Remove a gauge metric which has labels assocoated with it
+removeGauge("my_gauge_label", ["result", "successs"])
+```
+
 ### Metrics endpoint
 
 Expose your metrics to Prometheus by creating an HTTP endpoint in your Node.js application. This endpoint should return the metrics in the Prometheus exposition format.
