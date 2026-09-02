@@ -80,13 +80,43 @@ export const gauge = (name: string, description: string, value: number, ...label
   gauge.set(value);
 };
 
-export function removeCounter(name: string, ...labels: MetricLabel[]): void {
+/**
+ * Remove a counter metric from the Prometheus register.<br /><br />
+ * 
+ * Example usage:
+ * ```TypeScript
+ * // if no labels are present for this metric
+ * removeCounter("http_requests_total")
+ * 
+ * // when labels are present for this metric
+ * removeCounter("http_requests_total", ["method", "GET"])
+ * ```
+ * 
+ * @param name - The name of the counter metric
+ * @param labels - Optional pairs of label names and label values
+ */
+export const removeCounter = (name: string, ...labels: MetricLabel[]): void => {
   removeMetric("Counter", name, ...labels);
-}
+};
 
-export function removeGauge(name: string, ...labels: MetricLabel[]): void {
+/**
+ * Remove a gauge metric from the Prometheus register.<br /><br />
+ *
+ * Example usage:
+ * ```TypeScript
+ * // if no labels are present for this metric
+ * removeGauge("active_sessions")
+ *
+ * // when labels are present for this metric
+ * removeGauge("active_sessions", ["service", "auth"])
+ * ```
+ *
+ * @param name - The name of the gauge metric
+ * @param labels - Optional pairs of label names and label values
+ */
+export const removeGauge = (name: string, ...labels: MetricLabel[]): void => {
   removeMetric("Gauge", name, ...labels);
-}
+};
 
 const createCounter = (name: string, description: string, ...labels: MetricLabel[]): metricsClient.Counter => {
   if (labels.some((labelPair: MetricLabel) => !Array.isArray(labelPair) || labelPair.length !== 2)) {
