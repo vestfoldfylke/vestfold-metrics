@@ -2,6 +2,8 @@ import metricsClient, { type LabelValues } from "prom-client";
 
 export type MetricLabel = [labelName: string, labelValue: string];
 
+type MetricType = "Counter" | "Gauge";
+
 const register = new metricsClient.Registry();
 metricsClient.collectDefaultMetrics({ register });
 
@@ -78,6 +80,14 @@ export function gauge(name: string, description: string, value: number, ...label
   gauge.set(value);
 }
 
+export function removeCounter(name: string, ...labels: MetricLabel[]): void {
+  removeMetric("Counter", name, ...labels);
+}
+
+export function removeGauge(name: string, ...labels: MetricLabel[]): void {
+  removeMetric("Gauge", name, ...labels);
+}
+
 const createCounter = (name: string, description: string, ...labels: MetricLabel[]): metricsClient.Counter => {
   if (labels.some((labelPair: MetricLabel) => !Array.isArray(labelPair) || labelPair.length !== 2)) {
     throw new Error(
@@ -124,6 +134,33 @@ const generateLabelValues = (...labels: MetricLabel[]): LabelValues<string> => {
   });
 
   return labelValues;
+};
+
+const removeMetric = (type: MetricType, name: string, ...labels: MetricLabel[]): void => {
+  let metric: metricsClient.Metric | undefined;
+
+  switch (type) {
+    case "Counter":
+      metric = counters[name];
+      break;
+    case "Gauge":
+      metric = gauges[name];
+      break;
+    default:
+      throw new Error(`Metric type ${type} is not supported`);
+  }
+
+  if (!metric) {
+    throw new Error(`Metric with type ${type} was not found`);
+  }
+
+  if (labels.length > 0) {
+    metric.remove(generateLabelValues(...labels));
+    return;
+  }
+
+  metric.remove();
+  return;
 };
 
 export { register };
